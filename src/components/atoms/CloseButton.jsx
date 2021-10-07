@@ -2,10 +2,11 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { func } from 'prop-types';
 import { TouchableOpacity } from 'react-native';
+import styled from 'styled-components/native';
 
 const CloseButton = ({ onPress }) => (
   <TouchableOpacity onPress={onPress}>
-    <Icon name="delete" size={30} color="#848484" />
+    <$DeleteIcon name="delete" size={30} color="#848484" />
   </TouchableOpacity>
 );
 
@@ -16,5 +17,9 @@ CloseButton.propTypes = {
 CloseButton.defaultProps = {
   onPress: null,
 };
+
+const $DeleteIcon = styled(Icon)`
+  padding: 8px;
+`;
 
 export default CloseButton;

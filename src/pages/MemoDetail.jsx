@@ -3,12 +3,15 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Feather';
 import Layout from '../components/templates/Layout';
 
-const MemoDetail = () => {
-  const editTypes = {
-    name: 'edit',
-    size: 50,
-    color: '#467fd3',
-  };
+const editTypes = {
+  name: 'edit',
+  size: 50,
+  color: '#467fd3',
+};
+
+const MemoDetail = (props) => {
+  const { navigation } = props;
+
   return (
     <Layout>
       <_MemoHeader>
@@ -35,6 +38,7 @@ const MemoDetail = () => {
         name={editTypes.name}
         size={editTypes.size}
         color={editTypes.color}
+        onPress={() => navigation.navigate('MemoEdit')}
       />
     </Layout>
   );

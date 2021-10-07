@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import {
+  TextInput, View, Text, TouchableOpacity,
+} from 'react-native';
 import styled from 'styled-components/native';
 import Layout from '../components/templates/Layout';
 
-const Login = () => {
+const Login = (props) => {
   const [isLoginView, setLoginView] = useState(true);
-
+  const { navigation } = props;
   const changeLoginMode = () => {
     setLoginView(!isLoginView);
   };
@@ -14,14 +16,23 @@ const Login = () => {
     <Layout>
       <_Inner>
         <_LoginTitle>{isLoginView ? 'Log In' : 'Sign Up'}</_LoginTitle>
-        <_InputText
+        <_LoginInputText
           placeholder="Email Address"
           placeholderTextColor="#dddddd"
         />
-        <_InputText placeholder="Password" placeholderTextColor="#dddddd" />
-        <$Button label="Submit">
+        <_LoginInputText
+          placeholder="Password"
+          placeholderTextColor="#dddddd"
+        />
+        <_LoginButton
+          label="Submit"
+          onPress={() => navigation.reset({
+            index: 0,
+            routes: [{ name: 'MemoList' }],
+          })}
+        >
           <_ButtonLabel>Submit</_ButtonLabel>
-        </$Button>
+        </_LoginButton>
         <_Fotter>
           <_FotterText>
             {isLoginView ? 'Not registered?' : 'Already registered?'}
@@ -46,7 +57,7 @@ const _LoginTitle = styled.Text`
   margin-bottom: 24px;
 `;
 
-const _InputText = styled.TextInput`
+const _LoginInputText = styled.TextInput`
   margin-bottom: 16px;
   padding: 8px;
   height: 48px;
@@ -57,7 +68,7 @@ const _InputText = styled.TextInput`
   background-color: #ffffff;
 `;
 
-const $Button = styled(TouchableOpacity)`
+const _LoginButton = styled.TouchableOpacity`
   background-color: #467fd3;
   border-radius: 4px;
   height: 48px;

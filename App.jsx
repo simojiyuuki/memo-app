@@ -1,6 +1,9 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from '@react-navigation/stack';
 import Login from './src/pages/Login';
 import MemoCreate from './src/pages/MemoCreate';
 import MemoDetail from './src/pages/MemoDetail';
@@ -12,8 +15,31 @@ const Stack = createStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={Login} />
+      <Stack.Navigator
+        initialRouteName="Login"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#467FD3',
+          },
+          headerTitleStyle: {
+            color: '#ffffff',
+          },
+          headerTitle: 'Memo App',
+          headerTintColor: '#ffffff',
+          headerBackTitle: 'Back',
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          gestureEnabled: true,
+          gestureDirection: 'horizontal',
+        }}
+      >
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{
+            cardStyleInterpolator:
+              CardStyleInterpolators.forFadeFromBottomAndroid,
+          }}
+        />
         <Stack.Screen name="MemoCreate" component={MemoCreate} />
         <Stack.Screen name="MemoDetail" component={MemoDetail} />
         <Stack.Screen name="MemoEdit" component={MemoEdit} />

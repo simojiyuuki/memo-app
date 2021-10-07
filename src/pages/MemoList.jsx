@@ -58,12 +58,14 @@ const mockMemoList = [
   },
 ];
 
-const MemoList = () => {
-  const circleTypes = {
-    name: 'pluscircle',
-    size: 50,
-    color: '#467fd3',
-  };
+const circleTypes = {
+  name: 'pluscircle',
+  size: 50,
+  color: '#467fd3',
+};
+
+const MemoList = (props) => {
+  const { navigation } = props;
 
   return (
     <Layout>
@@ -84,6 +86,7 @@ const MemoList = () => {
         name={circleTypes.name}
         size={circleTypes.size}
         color={circleTypes.color}
+        onPress={() => navigation.navigate('MemoCreate')}
       />
     </Layout>
   );

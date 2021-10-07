@@ -1,15 +1,17 @@
 import React from 'react';
-import { TextInput, View, StyleSheet, Alert } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 import Layout from '../components/templates/Layout';
 
-const MemoEdit = () => {
-  const editTypes = {
-    name: 'edit',
-    size: 50,
-    color: '#467fd3',
-  };
+const editTypes = {
+  name: 'edit',
+  size: 50,
+  color: '#467fd3',
+};
+
+const MemoEdit = (props) => {
+  const { navigation } = props;
   return (
     <Layout>
       <_MemoInputContainer>
@@ -19,6 +21,7 @@ const MemoEdit = () => {
         name={editTypes.name}
         size={editTypes.size}
         color={editTypes.color}
+        onPress={() => navigation.goBack()}
       />
     </Layout>
   );

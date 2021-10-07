@@ -4,12 +4,15 @@ import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 import Layout from '../components/templates/Layout';
 
-const MemoCreate = () => {
-  const editTypes = {
-    name: 'edit',
-    size: 50,
-    color: '#467fd3',
-  };
+const editTypes = {
+  name: 'edit',
+  size: 50,
+  color: '#467fd3',
+};
+
+const MemoCreate = (props) => {
+  const { navigation } = props;
+
   return (
     <Layout>
       <_MemoInputContainer>
@@ -19,6 +22,7 @@ const MemoCreate = () => {
         name={editTypes.name}
         size={editTypes.size}
         color={editTypes.color}
+        onPress={() => navigation.goBack()}
       />
     </Layout>
   );

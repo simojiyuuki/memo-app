@@ -5,7 +5,7 @@ import AppBar from '../organisms/AppBar';
 
 const Layout = ({ children }) => (
   <_MemoContainer>
-    <AppBar />
+    {/* <AppBar /> */}
     {children}
   </_MemoContainer>
 );

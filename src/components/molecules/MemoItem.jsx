@@ -1,25 +1,30 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import styled from 'styled-components/native';
 import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
 import CloseButton from '../atoms/CloseButton';
 
-const MemoItem = ({ title, createDate }) => (
-  <_MemoItem>
-    <View>
-      <_MemoItemTitle>{title}</_MemoItemTitle>
-      <_MemoItemDate>{createDate}</_MemoItemDate>
-    </View>
-    <CloseButton />
-  </_MemoItem>
-);
+const MemoItem = ({ title, createDate }) => {
+  const navigation = useNavigation();
+
+  return (
+    <_MemoItem onPress={() => navigation.navigate('MemoDetail')}>
+      <View>
+        <_MemoItemTitle>{title}</_MemoItemTitle>
+        <_MemoItemDate>{createDate}</_MemoItemDate>
+      </View>
+      <CloseButton onPress={() => Alert.alert('削除')} />
+    </_MemoItem>
+  );
+};
 
 MemoItem.propTypes = {
   title: PropTypes.string.isRequired,
   createDate: PropTypes.string.isRequired,
 };
 
-const _MemoItem = styled.View`
+const _MemoItem = styled.TouchableOpacity`
   background-color: #fff;
   flex-direction: row;
   justify-content: space-between;
