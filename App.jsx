@@ -12,11 +12,13 @@ import MemoEdit from './src/pages/MemoEdit';
 import MemoList from './src/pages/MemoList';
 import { firebaseConfig } from './env';
 
-const Stack = createStackNavigator();
+require('firebase/firestore');
 
 if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);
 }
+
+const Stack = createStackNavigator();
 
 function App() {
   return (

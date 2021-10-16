@@ -1,8 +1,9 @@
-import React from 'react';
-import { TextInput, View, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
+import firebase from 'firebase';
 import Layout from '../components/templates/Layout';
 
 const editTypes = {
@@ -13,17 +14,45 @@ const editTypes = {
 
 const MemoCreate = () => {
   const navigation = useNavigation();
+  const [bodyText, setBodyText] = useState();
+
+  const handlePress = () => {
+    const { currentUser } = firebase.auth();
+    const db = firebase.firestore();
+    const ref = db.collection(`users/${currentUser.uid}/memos`);
+
+    ref
+      .add({
+        bodyText,
+        updatedAt: new Date(),
+      })
+      .then((docRef) => {
+        console.log('Created!', docRef.id);
+        navigation.goBack();
+      })
+      .catch((error) => {
+        console.log('Error!', error);
+      });
+  };
 
   return (
     <Layout>
       <_MemoInputContainer>
-        <_MemoInput style={styles.input} value="" multiline />
+        <_MemoInput
+          style={styles.input}
+          value={bodyText}
+          multiline
+          onChangeText={(text) => {
+            setBodyText(text);
+          }}
+          autoFocus
+        />
       </_MemoInputContainer>
       <$EditButton
         name={editTypes.name}
         size={editTypes.size}
         color={editTypes.color}
-        onPress={() => navigation.goBack()}
+        onPress={handlePress}
       />
     </Layout>
   );
@@ -49,7 +78,7 @@ const _MemoInput = styled.TextInput`
 const $EditButton = styled(Icon)`
   position: absolute;
   right: 40px;
-  bottom: 40px;
+  top: 30px;
 `;
 
 export default MemoCreate;

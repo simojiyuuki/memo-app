@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import Layout from '../components/templates/Layout';
 
@@ -78,7 +78,7 @@ const _MomoText = styled.Text`
 const $EditButton = styled(Icon)`
   position: absolute;
   right: 40px;
-  bottom: 40px;
+  bottom: 30px;
 `;
 
 export default MemoDetail;

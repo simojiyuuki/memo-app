@@ -52,7 +52,7 @@ const _MemoInput = styled.TextInput`
 const $EditButton = styled(Icon)`
   position: absolute;
   right: 40px;
-  bottom: 40px;
+  top: 30px;
 `;
 
 export default MemoEdit;
