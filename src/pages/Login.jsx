@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
@@ -7,12 +7,20 @@ import Layout from '../components/templates/Layout';
 
 const Login = () => {
   const navigation = useNavigation();
-  const [isLoginView, setLoginView] = useState(true);
+  const [isLoginView, setLoginView] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const memoListScreen = 'MemoList';
 
   const changeLoginMode = () => {
     setLoginView(!isLoginView);
+  };
+
+  const screenTransition = (screen) => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: screen }],
+    });
   };
 
   const siginUp = () => {
@@ -22,10 +30,7 @@ const Login = () => {
       .then((userCredential) => {
         const { user } = userCredential;
         console.log(user.uid);
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'MemoList' }],
-        });
+        screenTransition(memoListScreen);
       })
       .catch((error) => {
         console.log(error.code, error.message);
@@ -40,10 +45,7 @@ const Login = () => {
       .then((userCredential) => {
         const { user } = userCredential;
         console.log(user.uid);
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'MemoList' }],
-        });
+        screenTransition(memoListScreen);
       })
       .catch((error) => {
         console.log(error.code, error.message);
@@ -52,6 +54,15 @@ const Login = () => {
   };
 
   const handlePress = () => (isLoginView ? login() : siginUp());
+
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        screenTransition(memoListScreen);
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <Layout>
