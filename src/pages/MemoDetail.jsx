@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import firebase from 'firebase';
-import { Alert } from 'react-native';
 import Layout from '../components/templates/Layout';
 import { getNowDateWithString } from '../utils/DateUtil';
 
@@ -18,6 +17,13 @@ const MemoDetail = () => {
   const route = useRoute();
   const { id } = route.params;
   const [memo, setMemo] = useState(null);
+
+  const memoEditScreenTransition = () => {
+    navigation.navigate('MemoEdit', {
+      id: memo.id,
+      bodyText: memo.bodyText,
+    });
+  };
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -57,7 +63,7 @@ const MemoDetail = () => {
         name={editTypes.name}
         size={editTypes.size}
         color={editTypes.color}
-        onPress={() => navigation.navigate('MemoEdit')}
+        onPress={memoEditScreenTransition}
       />
     </Layout>
   );

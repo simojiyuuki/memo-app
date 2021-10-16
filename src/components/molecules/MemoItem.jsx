@@ -12,7 +12,7 @@ const MemoItem = ({ id, bodyText, updatedAt }) => {
   return (
     <_MemoItem onPress={() => navigation.navigate('MemoDetail', { id })}>
       <View>
-        <_MemoItemTitle>{bodyText}</_MemoItemTitle>
+        <_MemoItemTitle numberOfLines={1}>{bodyText}</_MemoItemTitle>
         <_MemoItemDate>{getNowDateWithString(updatedAt)}</_MemoItemDate>
       </View>
       <CloseButton onPress={() => Alert.alert('削除')} />

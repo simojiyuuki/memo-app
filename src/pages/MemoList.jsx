@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Alert, FlatList } from 'react-native';
+import { View, Alert, FlatList } from 'react-native';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
