@@ -1,16 +1,16 @@
 import React from 'react';
-import { View, Alert, FlatList } from 'react-native';
+import { View, Alert } from 'react-native';
 import styled from 'styled-components/native';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import CloseButton from '../atoms/CloseButton';
 import { getNowDateWithString } from '../../utils/DateUtil';
 
-const MemoItem = ({ bodyText, updatedAt }) => {
+const MemoItem = ({ id, bodyText, updatedAt }) => {
   const navigation = useNavigation();
 
   return (
-    <_MemoItem onPress={() => navigation.navigate('MemoDetail')}>
+    <_MemoItem onPress={() => navigation.navigate('MemoDetail', { id })}>
       <View>
         <_MemoItemTitle>{bodyText}</_MemoItemTitle>
         <_MemoItemDate>{getNowDateWithString(updatedAt)}</_MemoItemDate>
@@ -21,6 +21,7 @@ const MemoItem = ({ bodyText, updatedAt }) => {
 };
 
 MemoItem.propTypes = {
+  id: PropTypes.string.isRequired,
   bodyText: PropTypes.string.isRequired,
   updatedAt: PropTypes.instanceOf(Date).isRequired,
 };

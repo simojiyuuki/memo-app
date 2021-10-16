@@ -6659,6 +6659,13 @@
     "prop-types" "^15.7.2"
     "yargs" "^16.1.1"
 
+"react-native-web-log-box@^0.0.5":
+  "integrity" "sha512-CbscKRhCO73l0X8KkV/a5412cWadzXHgl2/cVzTw6xJh02tneeSwK16wyhQXt40fFpH5AAUQUMCCeaJZZWz4IQ=="
+  "resolved" "https://registry.npmjs.org/react-native-web-log-box/-/react-native-web-log-box-0.0.5.tgz"
+  "version" "0.0.5"
+  dependencies:
+    "invariant" "^2.2.4"
+
 "react-native-web@^0.12.3":
   "integrity" "sha512-6evhZl3tzYz5IUesbHEC4/ooUkXJPIAtrmDJWe3CdpDrV6rvBNNa1Utq192YKbHPzGtETuw+5X59K0O1n5EjWQ=="
   "resolved" "https://registry.npmjs.org/react-native-web/-/react-native-web-0.12.3.tgz"

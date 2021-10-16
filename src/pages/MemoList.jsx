@@ -21,6 +21,7 @@ const MemoList = () => {
   const renderItem = ({ item }) => (
     <MemoItem
       key={item.id}
+      id={item.id}
       bodyText={item.bodyText}
       updatedAt={item.updatedAt}
     />

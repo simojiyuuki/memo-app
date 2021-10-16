@@ -5,7 +5,8 @@ import {
   CardStyleInterpolators,
 } from '@react-navigation/stack';
 import firebase from 'firebase';
-import { LogBox, Platform } from 'react-native';
+import { Platform } from 'react-native';
+import { LogBox } from 'react-native-web-log-box';
 import Login from './src/pages/Login';
 import MemoCreate from './src/pages/MemoCreate';
 import MemoDetail from './src/pages/MemoDetail';

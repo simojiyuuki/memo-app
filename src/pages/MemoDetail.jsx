@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import firebase from 'firebase';
+import { Alert } from 'react-native';
 import Layout from '../components/templates/Layout';
+import { getNowDateWithString } from '../utils/DateUtil';
 
 const editTypes = {
   name: 'edit',
@@ -12,28 +15,43 @@ const editTypes = {
 
 const MemoDetail = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { id } = route.params;
+  const [memo, setMemo] = useState(null);
+
+  useEffect(() => {
+    const db = firebase.firestore();
+    const { currentUser } = firebase.auth();
+    const unsubscribe = () => {};
+
+    if (currentUser) {
+      const ref = db.collection(`users/${currentUser.uid}/memos`).doc(id);
+      ref.onSnapshot((doc) => {
+        console.log(doc.id, doc.data());
+        const data = doc.data();
+        setMemo({
+          id: doc.id,
+          bodyText: data.bodyText,
+          updatedAt: data.updatedAt.toDate(),
+        });
+      });
+    }
+
+    return unsubscribe;
+  }, []);
 
   return (
     <Layout>
       <_MemoHeader>
-        <_MemoItemTitle>買い物リスト</_MemoItemTitle>
-        <_MemoItemDate>2021年10月10日</_MemoItemDate>
+        <_MemoItemTitle numberOfLines={1}>
+          {memo && memo.bodyText}
+        </_MemoItemTitle>
+        <_MemoItemDate>
+          {memo && getNowDateWithString(memo.updatedAt)}
+        </_MemoItemDate>
       </_MemoHeader>
       <_MemoScrollView>
-        <_MomoText>
-          買い物リスト 書体やレイアウトなどを確認するために用います。
-          本文用なので使い方を間違えると不自然に見えることもありますので要注意。
-          カタカナ語が苦手な方は「組見本」と呼ぶとよいでしょう。
-          なお、組見本の「組」とは文字組のことです。
-          活字印刷時代の用語だったと思います。
-          このダミーテキストは自由に改変することが出来ます。
-          主に書籍やウェブページなどのデザインを作成する時によく使われます。
-          書体やレイアウトなどを確認するために用います。
-          トはダミー文書やダミー文章とも呼ばれることがあります。
-          カタカナ語が苦手な方は「組見本」と呼ぶとよいでしょう。
-          主に書籍やウェブページなどのデザインを作成する時によく使われます。
-          これは正式な文章の代わりに入れて使うダミーテキストです。
-        </_MomoText>
+        <_MomoText>{memo && memo.bodyText}</_MomoText>
       </_MemoScrollView>
       <$EditButton
         name={editTypes.name}
