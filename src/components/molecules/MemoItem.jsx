@@ -1,18 +1,19 @@
 import React from 'react';
-import { View, Alert } from 'react-native';
+import { View, Alert, FlatList } from 'react-native';
 import styled from 'styled-components/native';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import CloseButton from '../atoms/CloseButton';
+import { getNowDateWithString } from '../../utils/DateUtil';
 
-const MemoItem = ({ title, createDate }) => {
+const MemoItem = ({ bodyText, updatedAt }) => {
   const navigation = useNavigation();
 
   return (
     <_MemoItem onPress={() => navigation.navigate('MemoDetail')}>
       <View>
-        <_MemoItemTitle>{title}</_MemoItemTitle>
-        <_MemoItemDate>{createDate}</_MemoItemDate>
+        <_MemoItemTitle>{bodyText}</_MemoItemTitle>
+        <_MemoItemDate>{getNowDateWithString(updatedAt)}</_MemoItemDate>
       </View>
       <CloseButton onPress={() => Alert.alert('削除')} />
     </_MemoItem>
@@ -20,8 +21,8 @@ const MemoItem = ({ title, createDate }) => {
 };
 
 MemoItem.propTypes = {
-  title: PropTypes.string.isRequired,
-  createDate: PropTypes.string.isRequired,
+  bodyText: PropTypes.string.isRequired,
+  updatedAt: PropTypes.instanceOf(Date).isRequired,
 };
 
 const _MemoItem = styled.TouchableOpacity`

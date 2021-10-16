@@ -7,7 +7,7 @@ import Layout from '../components/templates/Layout';
 
 const Login = () => {
   const navigation = useNavigation();
-  const [isLoginView, setLoginView] = useState(false);
+  const [isLoginView, setLoginView] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const memoListScreen = 'MemoList';

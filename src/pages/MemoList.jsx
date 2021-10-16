@@ -1,64 +1,12 @@
-import React, { useEffect } from 'react';
-import { View, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, Alert, FlatList } from 'react-native';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
+import firebase from 'firebase';
 import MemoItem from '../components/molecules/MemoItem';
 import Layout from '../components/templates/Layout';
 import LogoutButton from '../components/atoms/LogoutButton';
-
-const mockMemoList = [
-  {
-    id: 1,
-    title: 'React1',
-    createDate: '2021年10月1日',
-  },
-  {
-    id: 2,
-    title: 'React2',
-    createDate: '2021年10月1日',
-  },
-  {
-    id: 3,
-    title: 'React3',
-    createDate: '2021年10月1日',
-  },
-  {
-    id: 4,
-    title: 'React4',
-    createDate: '2021年10月1日',
-  },
-  {
-    id: 5,
-    title: 'React5',
-    createDate: '2021年10月1日',
-  },
-  {
-    id: 6,
-    title: 'React6',
-    createDate: '2021年10月1日',
-  },
-  {
-    id: 7,
-    title: 'React7',
-    createDate: '2021年10月1日',
-  },
-  {
-    id: 8,
-    title: 'React8',
-    createDate: '2021年10月1日',
-  },
-  {
-    id: 9,
-    title: 'React9',
-    createDate: '2021年10月1日',
-  },
-  {
-    id: 10,
-    title: 'React10',
-    createDate: '2021年10月1日',
-  },
-];
 
 const circleTypes = {
   name: 'pluscircle',
@@ -68,6 +16,15 @@ const circleTypes = {
 
 const MemoList = () => {
   const navigation = useNavigation();
+  const [memos, setMemos] = useState([]);
+
+  const renderItem = ({ item }) => (
+    <MemoItem
+      key={item.id}
+      bodyText={item.bodyText}
+      updatedAt={item.updatedAt}
+    />
+  );
 
   useEffect(() => {
     navigation.setOptions({
@@ -75,19 +32,46 @@ const MemoList = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const db = firebase.firestore();
+    const { currentUser } = firebase.auth();
+    let unsubscribe = () => {};
+    if (currentUser) {
+      const ref = db
+        .collection(`users/${currentUser.uid}/memos`)
+        .orderBy('updatedAt', 'desc');
+      unsubscribe = ref.onSnapshot(
+        (snapshot) => {
+          const userMemos = [];
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            userMemos.push({
+              id: doc.id,
+              bodyText: data.bodyText,
+              updatedAt: data.updatedAt.toDate(),
+            });
+          });
+          setMemos(userMemos);
+          console.log(userMemos);
+        },
+        (error) => {
+          console.log(error);
+          Alert.alert('データの読み込みに失敗しました');
+        }
+      );
+    }
+    return unsubscribe;
+  }, []);
+
   return (
     <Layout>
-      <ScrollView>
-        <View>
-          {mockMemoList.map((item) => (
-            <MemoItem
-              key={item.id}
-              title={item.title}
-              createDate={item.createDate}
-            />
-          ))}
-        </View>
-      </ScrollView>
+      <View>
+        <FlatList
+          data={memos}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
       <$CircleButton
         name={circleTypes.name}
         size={circleTypes.size}

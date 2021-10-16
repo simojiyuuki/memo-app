@@ -2,7 +2,7 @@
   "expo": {
     "name": "memo-app",
     "slug": "memo-app",
-    "version": "1.0.0",
+    "version": "41.0.0",
     "privacy": "unlisted",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

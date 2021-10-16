@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { BackHandler, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
@@ -28,7 +28,8 @@ const MemoCreate = () => {
       })
       .then((docRef) => {
         console.log('Created!', docRef.id);
-        navigation.goBack();
+        if (navigation.canGoBack()) navigation.goBack();
+        else BackHandler.exitApp();
       })
       .catch((error) => {
         console.log('Error!', error);

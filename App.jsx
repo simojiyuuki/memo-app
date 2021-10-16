@@ -5,12 +5,20 @@ import {
   CardStyleInterpolators,
 } from '@react-navigation/stack';
 import firebase from 'firebase';
+import { LogBox, Platform } from 'react-native';
 import Login from './src/pages/Login';
 import MemoCreate from './src/pages/MemoCreate';
 import MemoDetail from './src/pages/MemoDetail';
 import MemoEdit from './src/pages/MemoEdit';
 import MemoList from './src/pages/MemoList';
 import { firebaseConfig } from './env';
+
+if (Platform.OS === 'android') {
+  LogBox.ignoreLogs([
+    'Non-serializable values were found in the navigation state',
+    'Setting a timer',
+  ]);
+}
 
 require('firebase/firestore');
 
