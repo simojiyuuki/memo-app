@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Feather';
+import { useNavigation } from '@react-navigation/native';
 import Layout from '../components/templates/Layout';
 
 const editTypes = {
@@ -9,8 +10,8 @@ const editTypes = {
   color: '#467fd3',
 };
 
-const MemoDetail = (props) => {
-  const { navigation } = props;
+const MemoDetail = () => {
+  const navigation = useNavigation();
 
   return (
     <Layout>

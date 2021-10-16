@@ -2,6 +2,7 @@ import React from 'react';
 import { View, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
 import MemoItem from '../components/molecules/MemoItem';
 import Layout from '../components/templates/Layout';
 
@@ -64,14 +65,12 @@ const circleTypes = {
   color: '#467fd3',
 };
 
-const MemoList = (props) => {
-  const { navigation } = props;
-
+const MemoList = () => {
+  const navigation = useNavigation();
   return (
     <Layout>
       <ScrollView>
         <View>
-          {/* メモ一覧表示 */}
           {mockMemoList.map((item) => (
             <MemoItem
               key={item.id}
@@ -81,7 +80,6 @@ const MemoList = (props) => {
           ))}
         </View>
       </ScrollView>
-      {/* メモ追加ボタン */}
       <$CircleButton
         name={circleTypes.name}
         size={circleTypes.size}

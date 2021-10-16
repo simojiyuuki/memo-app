@@ -4,13 +4,19 @@ import {
   createStackNavigator,
   CardStyleInterpolators,
 } from '@react-navigation/stack';
+import firebase from 'firebase';
 import Login from './src/pages/Login';
 import MemoCreate from './src/pages/MemoCreate';
 import MemoDetail from './src/pages/MemoDetail';
 import MemoEdit from './src/pages/MemoEdit';
 import MemoList from './src/pages/MemoList';
+import { firebaseConfig } from './env';
 
 const Stack = createStackNavigator();
+
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 function App() {
   return (

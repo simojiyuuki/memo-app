@@ -2,6 +2,7 @@ import React from 'react';
 import { TextInput, View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
+import { useNavigation } from '@react-navigation/native';
 import Layout from '../components/templates/Layout';
 
 const editTypes = {
@@ -10,8 +11,8 @@ const editTypes = {
   color: '#467fd3',
 };
 
-const MemoCreate = (props) => {
-  const { navigation } = props;
+const MemoCreate = () => {
+  const navigation = useNavigation();
 
   return (
     <Layout>

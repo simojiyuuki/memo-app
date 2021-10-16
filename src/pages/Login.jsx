@@ -1,16 +1,57 @@
 import React, { useState } from 'react';
-import {
-  TextInput, View, Text, TouchableOpacity,
-} from 'react-native';
+import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
+import firebase from 'firebase';
 import Layout from '../components/templates/Layout';
 
-const Login = (props) => {
+const Login = () => {
+  const navigation = useNavigation();
   const [isLoginView, setLoginView] = useState(true);
-  const { navigation } = props;
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const changeLoginMode = () => {
     setLoginView(!isLoginView);
   };
+
+  const siginUp = () => {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const { user } = userCredential;
+        console.log(user.uid);
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'MemoList' }],
+        });
+      })
+      .catch((error) => {
+        console.log(error.code, error.message);
+        Alert.alert(error.code);
+      });
+  };
+
+  const login = () => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const { user } = userCredential;
+        console.log(user.uid);
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'MemoList' }],
+        });
+      })
+      .catch((error) => {
+        console.log(error.code, error.message);
+        Alert.alert(error.code);
+      });
+  };
+
+  const handlePress = () => (isLoginView ? login() : siginUp());
 
   return (
     <Layout>
@@ -19,18 +60,24 @@ const Login = (props) => {
         <_LoginInputText
           placeholder="Email Address"
           placeholderTextColor="#dddddd"
+          value={email}
+          onChangeText={(text) => {
+            setEmail(text);
+          }}
+          keyboardType="email-address"
+          textContextType="emailAddress"
         />
         <_LoginInputText
           placeholder="Password"
           placeholderTextColor="#dddddd"
+          value={password}
+          onChangeText={(text) => {
+            setPassword(text);
+          }}
+          secureTextEntry
+          textContextType="password"
         />
-        <_LoginButton
-          label="Submit"
-          onPress={() => navigation.reset({
-            index: 0,
-            routes: [{ name: 'MemoList' }],
-          })}
-        >
+        <_LoginButton label="Submit" onPress={handlePress}>
           <_ButtonLabel>Submit</_ButtonLabel>
         </_LoginButton>
         <_Fotter>
@@ -54,21 +101,22 @@ const _LoginTitle = styled.Text`
   font-size: 24px;
   line-height: 32px;
   font-weight: bold;
-  margin-bottom: 24px;
+  margin: 8px;
 `;
 
 const _LoginInputText = styled.TextInput`
-  margin-bottom: 16px;
+  margin: 8px;
   padding: 8px;
   height: 48px;
   font-size: 16px;
-  line-height: 32px;
+  line-height: 24px;
   border-width: 1px;
   border-color: #dddddd;
   background-color: #ffffff;
 `;
 
 const _LoginButton = styled.TouchableOpacity`
+  margin: 8px;
   background-color: #467fd3;
   border-radius: 4px;
   height: 48px;
@@ -80,7 +128,6 @@ const _ButtonLabel = styled.Text`
   line-height: 32px;
   color: #ffffff;
   padding: 8px 32px;
-  margin-bottom: 24px;
 `;
 
 const _Fotter = styled.View`
