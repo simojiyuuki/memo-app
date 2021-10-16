@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import MemoItem from '../components/molecules/MemoItem';
 import Layout from '../components/templates/Layout';
+import LogoutButton from '../components/atoms/LogoutButton';
 
 const mockMemoList = [
   {
@@ -67,6 +68,13 @@ const circleTypes = {
 
 const MemoList = () => {
   const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <LogoutButton />,
+    });
+  }, []);
+
   return (
     <Layout>
       <ScrollView>
