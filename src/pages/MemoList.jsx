@@ -7,6 +7,7 @@ import firebase from 'firebase';
 import MemoItem from '../components/molecules/MemoItem';
 import Layout from '../components/templates/Layout';
 import LogoutButton from '../components/atoms/LogoutButton';
+import Loading from '../components/molecules/Loading';
 
 const circleTypes = {
   name: 'pluscircle',
@@ -17,6 +18,7 @@ const circleTypes = {
 const MemoList = () => {
   const navigation = useNavigation();
   const [memos, setMemos] = useState([]);
+  const [isLoading, setLoading] = useState(false);
 
   const renderItem = ({ item }) => (
     <MemoItem
@@ -38,6 +40,7 @@ const MemoList = () => {
     const { currentUser } = firebase.auth();
     let unsubscribe = () => {};
     if (currentUser) {
+      setLoading(true);
       const ref = db
         .collection(`users/${currentUser.uid}/memos`)
         .orderBy('updatedAt', 'desc');
@@ -53,9 +56,11 @@ const MemoList = () => {
             });
           });
           setMemos(userMemos);
+          setLoading(false);
           console.log(userMemos);
         },
         (error) => {
+          setLoading(false);
           console.log(error);
           Alert.alert('データの読み込みに失敗しました');
         }
@@ -66,6 +71,7 @@ const MemoList = () => {
 
   return (
     <Layout>
+      <Loading isLoading={isLoading} />
       <View>
         <FlatList
           data={memos}

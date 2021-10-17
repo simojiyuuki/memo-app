@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import firebase from 'firebase';
 import Layout from '../components/templates/Layout';
+import Loading from '../components/molecules/Loading';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -11,6 +12,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const memoListScreen = 'MemoList';
+  const [isLoading, setLoading] = useState(true);
 
   const changeLoginMode = () => {
     setLoginView(!isLoginView);
@@ -35,6 +37,9 @@ const Login = () => {
       .catch((error) => {
         console.log(error.code, error.message);
         Alert.alert(error.code);
+      })
+      .then(() => {
+        setLoading(false);
       });
   };
 
@@ -50,15 +55,27 @@ const Login = () => {
       .catch((error) => {
         console.log(error.code, error.message);
         Alert.alert(error.code);
+      })
+      .then(() => {
+        setLoading(false);
       });
   };
 
-  const handlePress = () => (isLoginView ? login() : siginUp());
+  const handlePress = () => {
+    setLoading(true);
+    if (isLoginView) {
+      login();
+    } else {
+      siginUp();
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         screenTransition(memoListScreen);
+      } else {
+        setLoading(false);
       }
     });
     return unsubscribe;
@@ -66,6 +83,7 @@ const Login = () => {
 
   return (
     <Layout>
+      <Loading isLoading={isLoading} />
       <_Inner>
         <_LoginTitle>{isLoginView ? 'Log In' : 'Sign Up'}</_LoginTitle>
         <_LoginInputText

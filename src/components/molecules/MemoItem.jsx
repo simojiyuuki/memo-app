@@ -3,11 +3,35 @@ import { View, Alert } from 'react-native';
 import styled from 'styled-components/native';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
+import firebase from 'firebase';
 import CloseButton from '../atoms/CloseButton';
 import { getNowDateWithString } from '../../utils/DateUtil';
 
 const MemoItem = ({ id, bodyText, updatedAt }) => {
   const navigation = useNavigation();
+
+  const deleteMemo = () => {
+    const { currentUser } = firebase.auth();
+    if (currentUser) {
+      const db = firebase.firestore();
+      const ref = db.collection(`users/${currentUser.uid}/memos`).doc(id);
+      Alert.alert('メモを削除します。', 'よろしいですか？', [
+        {
+          text: 'キャンセル',
+          onPress: () => {},
+        },
+        {
+          text: '削除する',
+          style: 'destructive',
+          onPress: () => {
+            ref.delete().catch(() => {
+              Alert.alert('削除に失敗しました。');
+            });
+          },
+        },
+      ]);
+    }
+  };
 
   return (
     <_MemoItem onPress={() => navigation.navigate('MemoDetail', { id })}>
@@ -15,7 +39,7 @@ const MemoItem = ({ id, bodyText, updatedAt }) => {
         <_MemoItemTitle numberOfLines={1}>{bodyText}</_MemoItemTitle>
         <_MemoItemDate>{getNowDateWithString(updatedAt)}</_MemoItemDate>
       </View>
-      <CloseButton onPress={() => Alert.alert('削除')} />
+      <CloseButton onPress={deleteMemo} />
     </_MemoItem>
   );
 };
